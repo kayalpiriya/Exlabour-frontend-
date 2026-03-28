@@ -23,7 +23,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", // Unga backend URL
+  baseURL: "https://exlabour-backend.onrender.com/api", // Unga backend URL
 });
 
 // Request anuppura ovvoru muraiyum Token-a Cookies-la irunthu eduthu anuppum
