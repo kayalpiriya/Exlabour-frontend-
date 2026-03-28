@@ -227,8 +227,18 @@ export const AuthProvider = ({ children }) => {
             const res = await API.post('/auth/login', { email, password });
             const userData = res.data;
             
-            Cookies.set('token', userData.token, { expires: 30 });
-            Cookies.set('user', JSON.stringify(userData), { expires: 30 });
+            // Cookies.set('token', userData.token, { expires: 30 });
+            // Cookies.set('user', JSON.stringify(userData), { expires: 30 });
+            Cookies.set('token', userData.token, { 
+    expires: 30, 
+    secure: true, // HTTPS only
+    sameSite: 'None' // cross-domain
+});
+Cookies.set('user', JSON.stringify(userData), { 
+    expires: 30, 
+    secure: true, 
+    sameSite: 'None' 
+});
             setUser(userData);
             return userData;
         } catch (error) {
