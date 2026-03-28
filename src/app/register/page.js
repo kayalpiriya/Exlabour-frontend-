@@ -302,7 +302,7 @@
 
 //     const handleSubmit = async (e) => {
 //         e.preventDefault();
-        
+
 //         if (!validateForm()) {
 //             toast.error("Please fix the errors in the form");
 //             return;
@@ -312,7 +312,7 @@
 //         try {
 //             const userData = await register(formData);
 //             toast.success('Registration successful!');
-            
+
 //             // Redirect immediately - DO NOT set loading false here, as page is unmounting
 //             router.push(`/dashboard/${userData.role}`);
 //         } catch (error) {
@@ -540,7 +540,7 @@
 
 //     const handleSubmit = async (e) => {
 //         e.preventDefault();
-        
+
 //         if (!validateForm()) {
 //             toast.error("Please fix the errors in the form");
 //             return;
@@ -692,7 +692,7 @@
 //                                 <div className="relative">
 //                                     {/* Glow effect on hover */}
 //                                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                                    
+
 //                                     <select
 //                                         name="role"
 //                                         value={formData.role}
@@ -706,7 +706,7 @@
 //                                             Tasker (I want to find work)
 //                                         </option>
 //                                     </select>
-                                    
+
 //                                     {/* Icon Container */}
 //                                     <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none z-20 text-slate-400 group-hover:text-cyan-400 transition-colors duration-300">
 //                                         <FiChevronDown size={20} className="group-hover:translate-y-0.5 transition-transform" />
@@ -790,7 +790,7 @@ export default function RegisterPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (!validateForm()) {
             toast.error("Please fix the errors in the form");
             return;
@@ -804,7 +804,7 @@ export default function RegisterPage() {
         } catch (error) {
             setLoading(false);
             toast.error(error.response?.data?.message || 'Registration failed');
-        } 
+        }
     };
 
     return (
@@ -879,9 +879,8 @@ export default function RegisterPage() {
                                     value={formData.name}
                                     onChange={handleChange}
                                     autoComplete="off" // 2. Disable individual field
-                                    className={`w-full px-4 py-3.5 rounded-2xl border bg-white/10 text-white placeholder:text-slate-400 outline-none focus:ring-2 transition ${
-                                        errors.name ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:ring-cyan-400/50 focus:border-cyan-300'
-                                    }`}
+                                    className={`w-full px-4 py-3.5 rounded-2xl border bg-white/10 text-white placeholder:text-slate-400 outline-none focus:ring-2 transition ${errors.name ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:ring-cyan-400/50 focus:border-cyan-300'
+                                        }`}
                                 />
                                 {errors.name && <p className="text-red-400 text-xs mt-1 ml-1">{errors.name}</p>}
                             </div>
@@ -897,9 +896,8 @@ export default function RegisterPage() {
                                     onChange={handleChange}
                                     type="email"
                                     autoComplete="off" // 3. Disable individual field
-                                    className={`w-full px-4 py-3.5 rounded-2xl border bg-white/10 text-white placeholder:text-slate-400 outline-none focus:ring-2 transition ${
-                                        errors.email ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:ring-cyan-400/50 focus:border-cyan-300'
-                                    }`}
+                                    className={`w-full px-4 py-3.5 rounded-2xl border bg-white/10 text-white placeholder:text-slate-400 outline-none focus:ring-2 transition ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:ring-cyan-400/50 focus:border-cyan-300'
+                                        }`}
                                 />
                                 {errors.email && <p className="text-red-400 text-xs mt-1 ml-1">{errors.email}</p>}
                             </div>
@@ -915,10 +913,9 @@ export default function RegisterPage() {
                                     onChange={handleChange}
                                     type="password"
                                     // 4. 'new-password' prevents browser from filling in a saved login password
-                                    autoComplete="new-password" 
-                                    className={`w-full px-4 py-3.5 rounded-2xl border bg-white/10 text-white placeholder:text-slate-400 outline-none focus:ring-2 transition ${
-                                        errors.password ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:ring-cyan-400/50 focus:border-cyan-300'
-                                    }`}
+                                    autoComplete="new-password"
+                                    className={`w-full px-4 py-3.5 rounded-2xl border bg-white/10 text-white placeholder:text-slate-400 outline-none focus:ring-2 transition ${errors.password ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:ring-cyan-400/50 focus:border-cyan-300'
+                                        }`}
                                 />
                                 {errors.password && <p className="text-red-400 text-xs mt-1 ml-1">{errors.password}</p>}
                             </div>
@@ -933,9 +930,8 @@ export default function RegisterPage() {
                                     value={formData.phone}
                                     onChange={handleChange}
                                     autoComplete="off" // 5. Disable individual field
-                                    className={`w-full px-4 py-3.5 rounded-2xl border bg-white/10 text-white placeholder:text-slate-400 outline-none focus:ring-2 transition ${
-                                        errors.phone ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:ring-cyan-400/50 focus:border-cyan-300'
-                                    }`}
+                                    className={`w-full px-4 py-3.5 rounded-2xl border bg-white/10 text-white placeholder:text-slate-400 outline-none focus:ring-2 transition ${errors.phone ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:ring-cyan-400/50 focus:border-cyan-300'
+                                        }`} 
                                 />
                                 {errors.phone && <p className="text-red-400 text-xs mt-1 ml-1">{errors.phone}</p>}
                             </div>
@@ -948,7 +944,7 @@ export default function RegisterPage() {
                                 <div className="relative">
                                     {/* Glow effect on hover */}
                                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                                    
+
                                     <select
                                         name="role"
                                         value={formData.role}
@@ -962,7 +958,7 @@ export default function RegisterPage() {
                                             Tasker (I want to find work)
                                         </option>
                                     </select>
-                                    
+
                                     {/* Icon Container */}
                                     <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none z-20 text-slate-400 group-hover:text-cyan-400 transition-colors duration-300">
                                         <FiChevronDown size={20} className="group-hover:translate-y-0.5 transition-transform" />
