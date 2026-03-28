@@ -189,7 +189,7 @@ import Cookies from 'js-cookie';
 export const AuthContext = createContext();
 
 const API = axios.create({
-    baseURL: 'http://localhost:5000/api',
+    baseURL: 'https://exlabour-backend.onrender.com/api',
 });
 
 // Add token to requests automatically
