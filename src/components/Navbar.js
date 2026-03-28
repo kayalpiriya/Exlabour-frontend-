@@ -190,44 +190,12 @@
 
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FiBriefcase, FiLogOut, FiBell, FiUser } from 'react-icons/fi';
 
 export default function Navbar() {
     const { user, logout } = useAuth();
     const router = useRouter();
-
- // Notifications State
-    const [notifications, setNotifications] = useState([]);
-    const [showDropdown, setShowDropdown] = useState(false);
-
-   // Fetch Notifications
-    useEffect(() => {
-        if (user) {
-            fetchNotifications();
-        }
-    }, [user]);
-
-    const fetchNotifications = async () => {
-        try {
-            const { data } = await API.get('/notifications');
-            setNotifications(data);
-        } catch (error) {
-            console.error('Error fetching notifications', error);
-        }
-    };
-
-    const handleMarkAsRead = async (id, link) => {
-        try {
-            await API.put(`/notifications/${id}/read`);
-            fetchNotifications(); // Update list after marking as read
-            setShowDropdown(false);
-            if (link) router.push(link);
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
     // Logic remains exactly the same
     const handleLogout = () => {
@@ -278,52 +246,11 @@ export default function Navbar() {
                         ) : (
                             // LOGGED IN STATE
                             <>
-                                {/* Notification Bell
+                                {/* Notification Bell */}
                                 <button className="group relative flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-500 shadow-sm transition-all hover:bg-indigo-100 hover:text-indigo-700 hover:shadow-indigo-200">
                                     <FiBell className="h-5 w-5 transition-transform group-hover:swing" />
                                     <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-pink-500 ring-2 ring-white shadow-sm"></span>
-                                </button> */}
-
-                                   {/* 🔔 Notifications Bell */}
-                        <div className="relative">
-                            <button 
-                                onClick={() => setShowDropdown(!showDropdown)}
-                                className="relative text-gray-600 hover:text-blue-600 p-2"
-                            >
-                                <FiBell size={22} />
-                                {unreadCount > 0 && (
-                                    <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">
-                                        {unreadCount}
-                                    </span>
-                                )}
-                            </button>
-
-                            {/* Notifications Dropdown */}
-                            {showDropdown && (
-                                <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-100 shadow-lg rounded-xl overflow-hidden z-50">
-                                    <div className="bg-gray-50 px-4 py-3 border-b border-gray-100 flex justify-between items-center">
-                                        <h3 className="font-bold text-gray-700">Notifications</h3>
-                                        <span className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full">{unreadCount} New</span>
-                                    </div>
-                                    <div className="max-h-80 overflow-y-auto">
-                                        {notifications.length === 0 ? (
-                                            <p className="p-4 text-center text-gray-500 text-sm">No notifications yet</p>
-                                        ) : (
-                                            notifications.map(notif => (
-                                                <div 
-                                                    key={notif._id} 
-                                                    onClick={() => handleMarkAsRead(notif._id, notif.link)}
-                                                    className={`p-4 border-b border-gray-50 cursor-pointer transition ${notif.isRead ? 'bg-white text-gray-500' : 'bg-blue-50/50 text-gray-800'}`}
-                                                >
-                                                    <p className={`text-sm ${notif.isRead ? '' : 'font-semibold'}`}>{notif.message}</p>
-                                                    <p className="text-xs text-gray-400 mt-1">{new Date(notif.createdAt).toLocaleDateString()}</p>
-                                                </div>
-                                            ))
-                                        )}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+                                </button>
 
                                 {/* User Profile Pill */}
                                 <div className="flex items-center gap-2 pl-1.5 pr-1.5 sm:pr-5 py-1.5 rounded-full border border-indigo-100 bg-white shadow-sm hover:shadow-md hover:border-indigo-200 transition-all duration-300 group cursor-pointer">
