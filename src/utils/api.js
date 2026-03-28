@@ -24,6 +24,8 @@ import Cookies from "js-cookie";
 
 const API = axios.create({
   baseURL: "https://exlabour-backend.onrender.com/api", // Unga backend URL
+    withCredentials: true, // 👈 cross-domain cookie allow
+
 });
 
 // Request anuppura ovvoru muraiyum Token-a Cookies-la irunthu eduthu anuppum
