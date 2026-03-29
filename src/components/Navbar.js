@@ -199,7 +199,7 @@ import Cookies from 'js-cookie';
 export default function Navbar() {
     const { user, logout } = useAuth();
     const router = useRouter();
-    const { notifications, fetchOfflineNotifications } = useNotifications();
+    const { notifications, fetchOfflineNotifications, markAsRead } = useNotifications();
     const [showDropdown, setShowDropdown] = useState(false);
 
     useEffect(() => {
@@ -281,8 +281,22 @@ export default function Navbar() {
                                                 {notifications.length > 0 ? (
                                                     notifications.map((notif, idx) => (
                                                         <div key={notif._id || idx} className={`p-4 border-b border-indigo-50/50 transition-colors ${!notif.isRead ? 'bg-indigo-50/30' : 'hover:bg-slate-50'}`}>
-                                                            <p className="font-bold text-slate-800 text-xs mb-1">{notif.title}</p>
-                                                            <p className="text-slate-500 text-[11px] leading-relaxed line-clamp-2">{notif.message}</p>
+                                                            <div className="flex justify-between items-start gap-2">
+                                                                <div>
+                                                                    <p className="font-bold text-slate-800 text-xs mb-1">{notif.title}</p>
+                                                                    <p className="text-slate-500 text-[11px] leading-relaxed line-clamp-2">{notif.message}</p>
+                                                                </div>
+                                                                <button 
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        markAsRead(notif._id);
+                                                                    }} 
+                                                                    className="p-1 rounded-full hover:bg-rose-100 hover:text-rose-600 text-slate-400 transition ml-2"
+                                                                    title="Dismiss"
+                                                                >
+                                                                    ✕
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     ))
                                                 ) : (

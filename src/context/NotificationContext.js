@@ -43,13 +43,22 @@ export const NotificationProvider = ({ children }) => {
         });
 
         newSocket.on('new_notification', (data) => {
-            // Add to state immediately
-            setNotifications(prev => [data, ...prev]);
-            
-            // Show toast popup in bottom right or top right
-            toast.success(data.message, {
-                icon: '🔔',
-                duration: 5000,
+            setNotifications(prev => {
+                // Prevent duplicate notifications firing from React Strict Mode or multiple emits
+                const exists = prev.find(n => 
+                    (n._id && n._id === data._id) || 
+                    (n.title === data.title && n.message === data.message)
+                );
+                
+                if (exists) return prev;
+
+                // Show toast popup
+                toast.success(data.message, {
+                    icon: '🔔',
+                    duration: 5000,
+                });
+
+                return [data, ...prev];
             });
         });
 
@@ -72,8 +81,28 @@ export const NotificationProvider = ({ children }) => {
         }
     };
 
+    // Function to mark notification as read and remove it from view
+    const markAsRead = async (notificationId) => {
+        if (!notificationId) return;
+        
+        // Optimistic UI update
+        setNotifications(prev => prev.filter(n => n._id !== notificationId));
+
+        try {
+            const token = Cookies.get('token');
+            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://exlabour-backend.onrender.com';
+            
+            await fetch(`${API_URL}/api/notifications/${notificationId}/read`, {
+                method: 'PUT',
+                headers: { Authorization: `Bearer ${token}` }
+            });
+        } catch (error) {
+            console.error('Failed to mark notification as read', error);
+        }
+    };
+
     return (
-        <NotificationContext.Provider value={{ socket, notifications, setNotifications, fetchOfflineNotifications }}>
+        <NotificationContext.Provider value={{ socket, notifications, setNotifications, fetchOfflineNotifications, markAsRead }}>
             {children}
         </NotificationContext.Provider>
     );
