@@ -16,7 +16,9 @@ export const NotificationProvider = ({ children }) => {
         
         if (!token) return;
 
-        const newSocket = io('http://localhost:5000', {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://exlabour-backend.onrender.com';
+
+        const newSocket = io(API_URL, {
             auth: { token },
             withCredentials: true,
         });
@@ -59,11 +61,12 @@ export const NotificationProvider = ({ children }) => {
     // Function to fetch offline notifications from DB when user logs in
     const fetchOfflineNotifications = async (userToken) => {
         try {
-            const res = await fetch('http://localhost:5000/api/notifications', {
+            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://exlabour-backend.onrender.com';
+            const res = await fetch(`${API_URL}/api/notifications`, {
                 headers: { Authorization: `Bearer ${userToken}` }
             });
             const data = await res.json();
-            setNotifications(data);
+            setNotifications(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error('Failed to fetch offline notifications', error);
         }
