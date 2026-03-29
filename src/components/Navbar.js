@@ -192,10 +192,22 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FiBriefcase, FiLogOut, FiBell, FiUser } from 'react-icons/fi';
+import { useNotifications } from '@/context/NotificationContext';
+import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 
 export default function Navbar() {
     const { user, logout } = useAuth();
     const router = useRouter();
+    const { notifications, fetchOfflineNotifications } = useNotifications();
+    const [showDropdown, setShowDropdown] = useState(false);
+
+    useEffect(() => {
+        if (user) {
+            const token = Cookies.get('token');
+            if (token) fetchOfflineNotifications(token);
+        }
+    }, [user]);
 
     // Logic remains exactly the same
     const handleLogout = () => {
@@ -247,10 +259,39 @@ export default function Navbar() {
                             // LOGGED IN STATE
                             <>
                                 {/* Notification Bell */}
-                                <button className="group relative flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-500 shadow-sm transition-all hover:bg-indigo-100 hover:text-indigo-700 hover:shadow-indigo-200">
-                                    <FiBell className="h-5 w-5 transition-transform group-hover:swing" />
-                                    <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-pink-500 ring-2 ring-white shadow-sm"></span>
-                                </button>
+                                <div className="relative">
+                                    <button 
+                                        onClick={() => setShowDropdown(!showDropdown)}
+                                        className="group relative flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50 text-indigo-500 shadow-sm transition-all hover:bg-indigo-100 hover:text-indigo-700 hover:shadow-indigo-200"
+                                    >
+                                        <FiBell className="h-5 w-5 transition-transform group-hover:swing" />
+                                        {notifications.length > 0 && (
+                                            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 ring-2 ring-white shadow-sm text-[9px] font-bold text-white">
+                                                {notifications.filter(num => !num.isRead).length || notifications.length}
+                                            </span>
+                                        )}
+                                    </button>
+                                    
+                                    {showDropdown && (
+                                        <div className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-indigo-100/50 overflow-hidden z-[100]">
+                                            <div className="p-4 border-b border-indigo-50 flex justify-between items-center bg-indigo-50/50">
+                                                <h3 className="font-extrabold text-indigo-900 text-sm">Notifications</h3>
+                                            </div>
+                                            <div className="max-h-[300px] overflow-y-auto">
+                                                {notifications.length > 0 ? (
+                                                    notifications.map((notif, idx) => (
+                                                        <div key={notif._id || idx} className={`p-4 border-b border-indigo-50/50 transition-colors ${!notif.isRead ? 'bg-indigo-50/30' : 'hover:bg-slate-50'}`}>
+                                                            <p className="font-bold text-slate-800 text-xs mb-1">{notif.title}</p>
+                                                            <p className="text-slate-500 text-[11px] leading-relaxed line-clamp-2">{notif.message}</p>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <div className="p-8 text-center text-xs font-medium text-slate-400">You're all caught up!</div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
 
                                 {/* User Profile Pill */}
                                 <div className="flex items-center gap-2 pl-1.5 pr-1.5 sm:pr-5 py-1.5 rounded-full border border-indigo-100 bg-white shadow-sm hover:shadow-md hover:border-indigo-200 transition-all duration-300 group cursor-pointer">

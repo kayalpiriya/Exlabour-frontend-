@@ -8,12 +8,10 @@ import Cookies from 'js-cookie';
 const NotificationContext = createContext();
 
 export const NotificationProvider = ({ children }) => {
-    const [socket, setSocket] = current => useState(null);
+    const [socket, setSocket] = useState(null);
     const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
-        // Assuming your auth token is stored in cookies named 'token'
-        // If it's in localStorage, adjust accordingly.
         const token = Cookies.get('token'); 
         
         if (!token) return;
@@ -23,15 +21,18 @@ export const NotificationProvider = ({ children }) => {
             withCredentials: true,
         });
 
-        // Optional: If user is admin or tasker, join specific rooms
-        // By default, the backend joins the user to their own personal room (their ID).
-        const userStr = localStorage.getItem('userInfo');
+        // Join specific rooms based on user role
+        const userStr = Cookies.get('user');
         if (userStr) {
-            const user = JSON.parse(userStr);
-            if (user.role === 'admin') {
-                newSocket.emit('join_role_room', 'admin');
-            } else if (user.role === 'tasker' && user.verificationStatus === 'verified') {
-                newSocket.emit('join_role_room', 'verified_taskers');
+            try {
+                const user = JSON.parse(userStr);
+                if (user.role === 'admin') {
+                    newSocket.emit('join_role_room', 'admin');
+                } else if (user.role === 'tasker' && user.verificationStatus === 'verified') {
+                    newSocket.emit('join_role_room', 'verified_taskers');
+                }
+            } catch (e) { 
+                console.error('Error parsing user cookie for socket:', e);
             }
         }
 
@@ -40,11 +41,11 @@ export const NotificationProvider = ({ children }) => {
         });
 
         newSocket.on('new_notification', (data) => {
-            // Add to state
+            // Add to state immediately
             setNotifications(prev => [data, ...prev]);
             
-            // Show toast
-            toast(data.message, {
+            // Show toast popup in bottom right or top right
+            toast.success(data.message, {
                 icon: '🔔',
                 duration: 5000,
             });
