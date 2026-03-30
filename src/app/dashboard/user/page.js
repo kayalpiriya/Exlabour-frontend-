@@ -1,190 +1,3 @@
-// 'use client';
-
-// import { useAuth } from '@/context/AuthContext';
-// import { useEffect, useState } from 'react';
-// import Link from 'next/link';
-// import API from '@/utils/api';
-// import {
-//     FiPlusCircle,
-//     FiList,
-//     FiClock,
-//     FiCheckCircle,
-//     FiAlertCircle,
-// } from 'react-icons/fi';
-
-// export default function UserDashboard() {
-//     const { user } = useAuth();
-//     const [tasks, setTasks] = useState([]);
-//     const [loading, setLoading] = useState(true);
-
-//     useEffect(() => {
-//         const fetchTasks = async () => {
-//             try {
-//                 const { data } = await API.get('/tasks');
-//                 setTasks(data);
-//             } catch (error) {
-//                 console.error(error);
-//             } finally {
-//                 setLoading(false);
-//             }
-//         };
-//         fetchTasks();
-//     }, []);
-
-//     const stats = [
-//         {
-//             label: 'Total Tasks',
-//             value: tasks.length,
-//             icon: <FiList />,
-//             color: 'bg-blue-100 text-blue-600',
-//         },
-//         {
-//             label: 'Pending Approval',
-//             value: tasks.filter((t) => t.approvalStatus === 'pending_admin_approval').length,
-//             icon: <FiClock />,
-//             color: 'bg-yellow-100 text-yellow-600',
-//         },
-//         {
-//             label: 'Active Tasks',
-//             value: tasks.filter((t) => t.taskStatus === 'open_for_bidding').length,
-//             icon: <FiAlertCircle />,
-//             color: 'bg-green-100 text-green-600',
-//         },
-//         {
-//             label: 'Completed',
-//             value: tasks.filter((t) => t.taskStatus === 'completed').length,
-//             icon: <FiCheckCircle />,
-//             color: 'bg-purple-100 text-purple-600',
-//         },
-//     ];
-
-//     return (
-//         <div>
-//             {/* Header */}
-//             <div className="mb-8">
-//                 <h1 className="text-2xl font-bold text-gray-800">
-//                     Welcome back, {user?.name}! 👋
-//                 </h1>
-//                 <p className="text-gray-500 mt-1">
-//                     Here is what is happening with your tasks today.
-//                 </p>
-
-//                 {user?.verificationStatus === 'pending' && (
-//                     <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-xl p-4 flex items-center gap-3">
-//                         <FiAlertCircle className="text-yellow-500 text-xl" />
-//                         <p className="text-yellow-700 text-sm font-medium">
-//                             Your account is pending admin verification. Some features may be limited.
-//                         </p>
-//                     </div>
-//                 )}
-//             </div>
-
-//             {/* Stats */}
-//             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-//                 {stats.map((stat, i) => (
-//                     <div key={i} className="card">
-//                         <div className={`w-10 h-10 ${stat.color} rounded-lg flex items-center justify-center text-xl mb-3`}>
-//                             {stat.icon}
-//                         </div>
-//                         <p className="text-2xl font-bold text-gray-800">
-//                             {loading ? '...' : stat.value}
-//                         </p>
-//                         <p className="text-gray-500 text-sm">{stat.label}</p>
-//                     </div>
-//                 ))}
-//             </div>
-
-//             {/* Quick Actions */}
-//             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-//                 <Link
-//                     href="/dashboard/user/tasks/create"
-//                     className="card hover:shadow-md transition flex items-center gap-4 cursor-pointer"
-//                 >
-//                     <div className="bg-blue-100 p-3 rounded-xl">
-//                         <FiPlusCircle className="text-blue-600 text-2xl" />
-//                     </div>
-//                     <div>
-//                         <h3 className="font-semibold text-gray-800">Post New Task</h3>
-//                         <p className="text-gray-500 text-sm">Create a task and receive bids</p>
-//                     </div>
-//                 </Link>
-
-//                 <Link
-//                     href="/dashboard/user/tasks"
-//                     className="card hover:shadow-md transition flex items-center gap-4 cursor-pointer"
-//                 >
-//                     <div className="bg-green-100 p-3 rounded-xl">
-//                         <FiList className="text-green-600 text-2xl" />
-//                     </div>
-//                     <div>
-//                         <h3 className="font-semibold text-gray-800">View My Tasks</h3>
-//                         <p className="text-gray-500 text-sm">Manage and track your tasks</p>
-//                     </div>
-//                 </Link>
-//             </div>
-
-//             {/* Recent Tasks */}
-//             <div className="card">
-//                 <div className="flex justify-between items-center mb-4">
-//                     <h2 className="text-lg font-bold text-gray-800">Recent Tasks</h2>
-//                     <Link
-//                         href="/dashboard/user/tasks"
-//                         className="text-blue-600 text-sm hover:underline"
-//                     >
-//                         View all
-//                     </Link>
-//                 </div>
-
-//                 {loading ? (
-//                     <p className="text-gray-400 text-center py-8">Loading tasks...</p>
-//                 ) : tasks.length === 0 ? (
-//                     <div className="text-center py-12">
-//                         <FiList className="text-gray-300 text-5xl mx-auto mb-4" />
-//                         <p className="text-gray-400 font-medium">No tasks yet</p>
-//                         <Link
-//                             href="/dashboard/user/tasks/create"
-//                             className="btn-primary mt-4 inline-block"
-//                         >
-//                             Post Your First Task
-//                         </Link>
-//                     </div>
-//                 ) : (
-//                     <div className="space-y-3">
-//                         {tasks.slice(0, 5).map((task) => (
-//                             <Link
-//                                 key={task._id}
-//                                 href={`/dashboard/user/tasks/${task._id}`}
-//                                 className="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:bg-gray-50 transition"
-//                             >
-//                                 <div>
-//                                     <p className="font-medium text-gray-800">{task.title}</p>
-//                                     <p className="text-sm text-gray-500">{task.category}</p>
-//                                 </div>
-//                                 <div className="text-right">
-//                                     <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-//                                         task.approvalStatus === 'approved'
-//                                             ? 'bg-green-100 text-green-700'
-//                                             : task.approvalStatus === 'rejected'
-//                                             ? 'bg-red-100 text-red-700'
-//                                             : 'bg-yellow-100 text-yellow-700'
-//                                     }`}>
-//                                         {task.approvalStatus}
-//                                     </span>
-//                                     <p className="text-xs text-gray-400 mt-1">
-//                                         ₹{task.budgetMin} - ₹{task.budgetMax}
-//                                     </p>
-//                                 </div>
-//                             </Link>
-//                         ))}
-//                     </div>
-//                 )}
-//             </div>
-//         </div>
-//     );
-// }
-
-
-
 'use client';
 
 import { useAuth } from '@/context/AuthContext';
@@ -253,12 +66,12 @@ export default function UserDashboard() {
 
     return (
         <div className="max-w-7xl mx-auto space-y-8 pb-12 animate-fade-in">
-            
+
             {/* Header Section */}
             <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-[0_2px_20px_-8px_rgba(0,0,0,0.05)] relative overflow-hidden">
                 {/* Decorative background blob */}
                 <div className="absolute top-0 right-0 -mt-16 -mr-16 w-64 h-64 bg-blue-50 rounded-full blur-3xl opacity-60 pointer-events-none"></div>
-                
+
                 <div className="relative z-10">
                     <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
                         Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{user?.name?.split(' ')[0]}</span>! 👋
@@ -388,13 +201,12 @@ export default function UserDashboard() {
                                     </div>
                                 </div>
                                 <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t border-gray-100 sm:border-0 pt-3 sm:pt-0">
-                                    <span className={`text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider ring-1 ${
-                                        task.approvalStatus === 'approved'
+                                    <span className={`text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider ring-1 ${task.approvalStatus === 'approved'
                                             ? 'bg-emerald-50 text-emerald-700 ring-emerald-600/20'
                                             : task.approvalStatus === 'rejected'
-                                            ? 'bg-red-50 text-red-700 ring-red-600/20'
-                                            : 'bg-amber-50 text-amber-700 ring-amber-600/20'
-                                    }`}>
+                                                ? 'bg-red-50 text-red-700 ring-red-600/20'
+                                                : 'bg-amber-50 text-amber-700 ring-amber-600/20'
+                                        }`}>
                                         {formatStatus(task.approvalStatus)}
                                     </span>
                                     <p className="text-sm font-bold text-gray-700 mt-1.5">

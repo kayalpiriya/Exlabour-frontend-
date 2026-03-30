@@ -1,58 +1,3 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: #f8fafc;
-}
-
-::-webkit-scrollbar {
-    width: 6px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #94a3b8;
-    border-radius: 3px;
-}
-
-@layer components {
-    .btn-primary {
-        @apply bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition font-medium;
-    }
-    .btn-secondary {
-        @apply bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition font-medium;
-    }
-    .btn-danger {
-        @apply bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition font-medium;
-    }
-    .btn-success {
-        @apply bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition font-medium;
-    }
-    .card {
-        @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6;
-    }
-    .input-field {
-        @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition;
-    }
-    .badge-pending {
-        @apply bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs font-medium;
-    }
-    .badge-verified {
-        @apply bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-medium;
-    }
-    .badge-rejected {
-        @apply bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-medium;
-    }
-    .badge-blocked {
-        @apply bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs font-medium;
-    }
-} */
-
 @import "tailwindcss";
 
 body {
@@ -72,5 +17,3 @@ body {
     background: #888;
     border-radius: 3px;
 }
-
-

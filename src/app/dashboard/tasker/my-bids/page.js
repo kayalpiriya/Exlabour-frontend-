@@ -1,127 +1,14 @@
-// 'use client';
-
-// import { useEffect, useState } from 'react';
-// import API from '@/utils/api';
-// import toast from 'react-hot-toast';
-// import { FiDollarSign, FiClock, FiXCircle } from 'react-icons/fi';
-
-// export default function MyBidsPage() {
-//     const [bids, setBids] = useState([]);
-//     const [loading, setLoading] = useState(true);
-
-//     const fetchBids = async () => {
-//         try {
-//             const { data } = await API.get('/bids/my-bids');
-//             setBids(data);
-//         } catch (error) {
-//             toast.error('Failed to fetch bids');
-//         } finally {
-//             setLoading(false);
-//         }
-//     };
-
-//     const handleWithdraw = async (bidId) => {
-//         if (!confirm('Withdraw this bid?')) return;
-//         try {
-//             await API.put(`/bids/withdraw/${bidId}`);
-//             toast.success('Bid withdrawn');
-//             fetchBids();
-//         } catch (error) {
-//             toast.error(error.response?.data?.message || 'Failed to withdraw bid');
-//         }
-//     };
-
-//     useEffect(() => {
-//         fetchBids();
-//     }, []);
-
-//     return (
-//         <div>
-//             <div className="mb-6">
-//                 <h1 className="text-2xl font-bold text-gray-800">My Bids</h1>
-//                 <p className="text-gray-500">Track all your submitted bids</p>
-//             </div>
-
-//             {loading ? (
-//                 <div className="text-center py-20 text-gray-400">Loading...</div>
-//             ) : bids.length === 0 ? (
-//                 <div className="card text-center py-16">
-//                     <FiDollarSign className="text-gray-300 text-6xl mx-auto mb-4" />
-//                     <p className="text-gray-400 font-medium">No bids placed yet</p>
-//                 </div>
-//             ) : (
-//                 <div className="grid gap-4">
-//                     {bids.map((bid) => (
-//                         <div key={bid._id} className="card hover:shadow-md transition">
-//                             <div className="flex justify-between items-start mb-3">
-//                                 <div>
-//                                     <h3 className="font-semibold text-gray-800 text-lg">
-//                                         {bid.taskId?.title || 'Task'}
-//                                     </h3>
-//                                     <p className="text-gray-500 text-sm">
-//                                         {bid.taskId?.category} • {bid.taskId?.location}
-//                                     </p>
-//                                 </div>
-//                                 <span className={`text-xs px-3 py-1 rounded-full font-medium ${
-//                                     bid.bidStatus === 'accepted'
-//                                         ? 'badge-verified'
-//                                         : bid.bidStatus === 'rejected'
-//                                         ? 'badge-rejected'
-//                                         : bid.bidStatus === 'withdrawn'
-//                                         ? 'badge-blocked'
-//                                         : 'badge-pending'
-//                                 }`}>
-//                                     {bid.bidStatus}
-//                                 </span>
-//                             </div>
-
-//                             <p className="text-gray-600 text-sm mb-4 bg-gray-50 p-3 rounded-lg">
-//                                 {bid.proposalMessage}
-//                             </p>
-
-//                             <div className="flex items-center justify-between">
-//                                 <div className="flex gap-6">
-//                                     <div className="flex items-center gap-1 text-green-600 font-bold">
-//                                         <FiDollarSign />
-//                                         ₹{bid.bidAmount}
-//                                     </div>
-//                                     <div className="flex items-center gap-1 text-gray-500 text-sm">
-//                                         <FiClock />
-//                                         {bid.deliveryDays} days delivery
-//                                     </div>
-//                                 </div>
-
-//                                 {bid.bidStatus === 'pending' && (
-//                                     <button
-//                                         onClick={() => handleWithdraw(bid._id)}
-//                                         className="btn-danger flex items-center gap-1 text-sm"
-//                                     >
-//                                         <FiXCircle />
-//                                         Withdraw
-//                                     </button>
-//                                 )}
-//                             </div>
-//                         </div>
-//                     ))}
-//                 </div>
-//             )}
-//         </div>
-//     );
-// }
-
-
-
 'use client';
 
 import { useEffect, useState } from 'react';
 import API from '@/utils/api';
 import toast from 'react-hot-toast';
-import { 
-    FiDollarSign, 
-    FiClock, 
-    FiXCircle, 
-    FiFolder, 
-    FiMapPin, 
+import {
+    FiDollarSign,
+    FiClock,
+    FiXCircle,
+    FiFolder,
+    FiMapPin,
     FiMessageSquare,
     FiActivity
 } from 'react-icons/fi';
@@ -189,8 +76,8 @@ export default function MyBidsPage() {
             ) : (
                 <div className="grid gap-6 lg:grid-cols-2">
                     {bids.map((bid) => (
-                        <div 
-                            key={bid._id} 
+                        <div
+                            key={bid._id}
                             className="group flex flex-col bg-white rounded-[32px] p-6 lg:p-8 border border-slate-100 shadow-[0_4px_20px_rgba(15,23,42,0.03)] hover:shadow-[0_15px_40px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300"
                         >
                             {/* Top Header - Task Title & Status */}
@@ -199,7 +86,7 @@ export default function MyBidsPage() {
                                     <h3 className="font-extrabold text-slate-900 text-xl tracking-tight mb-2 group-hover:text-blue-600 transition-colors line-clamp-1">
                                         {bid.taskId?.title || 'Unknown Task'}
                                     </h3>
-                                    
+
                                     {/* Task Category & Location Pills */}
                                     <div className="flex flex-wrap gap-2 text-xs font-semibold text-slate-500">
                                         <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-lg">
@@ -210,20 +97,18 @@ export default function MyBidsPage() {
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 {/* Status Badge */}
-                                <div className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider border ${
-                                    bid.bidStatus === 'accepted' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' :
-                                    bid.bidStatus === 'rejected' ? 'bg-rose-50 text-rose-600 border-rose-200' :
-                                    bid.bidStatus === 'withdrawn' ? 'bg-slate-100 text-slate-600 border-slate-200' :
-                                    'bg-amber-50 text-amber-600 border-amber-200'
-                                }`}>
-                                    <span className={`w-1.5 h-1.5 rounded-full ${
-                                        bid.bidStatus === 'accepted' ? 'bg-emerald-500' :
-                                        bid.bidStatus === 'rejected' ? 'bg-rose-500' :
-                                        bid.bidStatus === 'withdrawn' ? 'bg-slate-500' :
-                                        'bg-amber-500 animate-pulse'
-                                    }`}></span>
+                                <div className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider border ${bid.bidStatus === 'accepted' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' :
+                                        bid.bidStatus === 'rejected' ? 'bg-rose-50 text-rose-600 border-rose-200' :
+                                            bid.bidStatus === 'withdrawn' ? 'bg-slate-100 text-slate-600 border-slate-200' :
+                                                'bg-amber-50 text-amber-600 border-amber-200'
+                                    }`}>
+                                    <span className={`w-1.5 h-1.5 rounded-full ${bid.bidStatus === 'accepted' ? 'bg-emerald-500' :
+                                            bid.bidStatus === 'rejected' ? 'bg-rose-500' :
+                                                bid.bidStatus === 'withdrawn' ? 'bg-slate-500' :
+                                                    'bg-amber-500 animate-pulse'
+                                        }`}></span>
                                     {bid.bidStatus}
                                 </div>
                             </div>
