@@ -365,7 +365,7 @@ export default function HomePage() {
                         ExLabour
                     </p>
                     <p className="text-sm text-slate-500">
-                        © 2025 ExLabour. All rights reserved.
+                        © 2026 ExLabour. All rights reserved.
                     </p>
                 </div>
             </footer>
